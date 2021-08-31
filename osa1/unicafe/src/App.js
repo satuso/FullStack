@@ -18,7 +18,10 @@ const Statistics = (props) => {
     )
   } else {
     return (
-      <></>
+      <>
+        <h2>statistics</h2>
+        <p>no feedback given</p>
+      </>
     )
   }
 }
