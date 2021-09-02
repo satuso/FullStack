@@ -1,10 +1,7 @@
-const Header = (props) => (<h1>{props.course.name}</h1>)
+const Header = ({course}) => (<h1>{course.name}</h1>)
 
 const Total = ({course}) => {
-    let total = 0
-    for (let i = 0; i < course.parts.length; i++){
-        total += course.parts[i].exercises
-    }
+    let total = course.parts.map(item => item.exercises).reduce((accumulator, currentValue) => accumulator + currentValue, 0)
     return (
         <p><b>total of {total} exercises </b></p>
     )
