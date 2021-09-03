@@ -3,26 +3,33 @@ import Note from "./Note"
 
 const App = () => {
   const [ persons, setPersons] = useState([{
-    name: "Arto Hellas"
+    name: "Arto Hellas",
+    number: "040 123 4567"
   }]) 
   const [ newName, setNewName ] = useState("")
+  const [ newNumber, setNewNumber ] = useState("")
 
   const handleSubmit = (event) => {
     event.preventDefault()
     let nameList = persons.map(person => person.name)
     const personObject = {
-      name: newName
+      name: newName,
+      number: newNumber
     }
     if (nameList.includes(personObject.name)){
       alert(`${newName} is already added to phonebook`)
     } else {
       setPersons(persons.concat(personObject))
       setNewName("")
+      setNewNumber("")
     }
   }
 
   const handleNameChange = (event) => {
     setNewName(event.target.value)
+  }
+  const handleNumberChange = (event) => {
+    setNewNumber(event.target.value)
   }
 
   return (
@@ -34,6 +41,11 @@ const App = () => {
           <input 
             value={newName} 
             onChange={handleNameChange}
+          />
+          number:
+          <input 
+            value={newNumber} 
+            onChange={handleNumberChange}
           />
         </div>
         <div>
