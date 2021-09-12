@@ -27,9 +27,13 @@ const App = () => {
     if (nameList.includes(personObject.name)){
       alert(`${newName} is already added to phonebook`)
     } else {
-      setPersons(persons.concat(personObject))
-      setNewName(newName)
-      setNewNumber(newNumber)
+      axios
+      .post('http://localhost:3001/persons', personObject)
+      .then(response => {
+        setPersons(persons.concat(response.data))
+        setNewName(newName)
+        setNewNumber(newNumber)
+      })
     }
   }
 
@@ -41,6 +45,9 @@ const App = () => {
   }
   const handleNumberChange = (event) => {
     setNewNumber(event.target.value)
+  }
+  const handleDelete = () => {
+    console.log("delete")
   }
 
   let filteredPersons = (filter === "" ? persons : persons.filter(function(person){
@@ -55,7 +62,7 @@ const App = () => {
       <h2>Numbers</h2>
         <div>
         {filteredPersons.map(person =>
-          <Persons key={person.name} person={person} />
+          <Persons key={person.name} person={person} handleDelete={handleDelete}/>
         )}
         </div>
     </div>
