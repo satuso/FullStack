@@ -5,6 +5,7 @@ import Persons from "./components/Persons"
 import personService from "./services/persons"
 
 const App = () => {
+
   useEffect(() => {
     personService
       .getAll()
@@ -12,10 +13,15 @@ const App = () => {
         setPersons(initialPersons)
       })
   }, [])
+
   const [ persons, setPersons] = useState([]) 
   const [ newName, setNewName ] = useState("")
   const [ newNumber, setNewNumber ] = useState("")
   const [ filter, setFilter ] = useState("")
+
+  let filteredPersons = (filter === "" ? persons : persons.filter(function(person){
+    return person.name.toLowerCase().includes(filter.toLowerCase())
+  }))
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -40,19 +46,23 @@ const App = () => {
   const handleFilterChange = (event) => {
     setFilter(event.target.value)
   }
+  
   const handleNameChange = (event) => {
     setNewName(event.target.value)
   }
+
   const handleNumberChange = (event) => {
     setNewNumber(event.target.value)
   }
-  const handleDelete = () => {
-    console.log("delete")
-  }
 
-  let filteredPersons = (filter === "" ? persons : persons.filter(function(person){
-    return person.name.toLowerCase().includes(filter.toLowerCase())
-  }))
+  const handleDelete = (id, name) => {
+    window.confirm(`Delete ${name}?`) ?
+    personService
+      .deletePerson(id).then(() => {
+      const newPersons = persons.filter((item) => item.id !== id);
+      setPersons(newPersons)
+    }) : setPersons(filteredPersons)
+  }
 
   return (
     <div>
