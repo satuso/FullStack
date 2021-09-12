@@ -25,13 +25,20 @@ const App = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    let nameList = persons.map(person => person.name)
+    const person = persons.find(person => person.name.toLowerCase() === newName.toLowerCase())
+    const updatedPerson = {...person, number: newNumber}
+    const nameList = persons.map(person => person.name)
     const personObject = {
       name: newName,
       number: newNumber
     }
     if (nameList.includes(personObject.name)){
-      alert(`${newName} is already added to phonebook`)
+      window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`) ?
+      personService
+      .update(person.id, updatedPerson)
+      .then(returnedPerson => {
+        setPersons(persons.map(p => p.id !== person.id ? p : returnedPerson))
+      }) : setPersons(filteredPersons)
     } else {
       personService
       .create(personObject)
@@ -58,7 +65,8 @@ const App = () => {
   const handleDelete = (id, name) => {
     window.confirm(`Delete ${name}?`) ?
     personService
-      .deletePerson(id).then(() => {
+      .deletePerson(id)
+      .then(() => {
       const newPersons = persons.filter((item) => item.id !== id);
       setPersons(newPersons)
     }) : setPersons(filteredPersons)

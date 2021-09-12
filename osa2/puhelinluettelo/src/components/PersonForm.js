@@ -10,6 +10,7 @@ const PersonForm = (props) => {
                 value={props.newName} 
                 onChange={props.handleNameChange}
             />
+            <br />
             number:
             <input 
                 name="number"
