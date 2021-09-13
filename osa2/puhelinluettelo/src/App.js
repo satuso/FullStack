@@ -6,6 +6,7 @@ import Persons from "./components/Persons"
 import personService from "./services/persons"
 
 const App = () => {
+  
   useEffect(() => {
     personService
       .getAll()
@@ -23,7 +24,7 @@ const App = () => {
   const filteredPersons = (filter === "" ? persons : persons.filter(function(person){
     return person.name.toLowerCase().includes(filter.toLowerCase())
   }))
- 
+
   const handleSubmit = (event) => {
     event.preventDefault()
     const person = persons.find(person => person.name.toLowerCase() === newName.toLowerCase())
@@ -39,25 +40,71 @@ const App = () => {
       .update(person.id, updatedPerson)
       .then(returnedPerson => {
         setPersons(persons.map(p => p.id !== person.id ? p : returnedPerson))
-        setMsg(`${newName}'s number was updated`)
+        setMsg({
+          text: `Updated ${newName}'s number`,
+          type: "success"})
         setTimeout(() => {
           setMsg(null)
         }, 5000)
+      })
+      .catch(error => {
+        setMsg({
+          text: `Cannot update number ${error}`,
+          type: "error"})
+        console.log(error, msg)
       }) : setPersons(filteredPersons)
     } else {
       personService
       .create(personObject)
-        .then(returnedPerson => {
+      .then(returnedPerson => {
         setPersons(persons.concat(returnedPerson))
         setNewName(newName)
         setNewNumber(newNumber)
-        setMsg(`Added ${newName}`)
+        setMsg({
+          text: `Added ${newName}`,
+          type: "success"})
+        setTimeout(() => {
+          setMsg(null)
+        }, 5000)
+      })
+      .catch(error => {
+        setMsg({
+          text: `Cannot add ${newName}`,
+          type: "error"})
+        console.log(error)
         setTimeout(() => {
           setMsg(null)
         }, 5000)
       })
     }
   }
+
+  const handleDelete = (id, name) => {
+    window.confirm(`Delete ${name}?`) ?
+    personService
+      .deletePerson(id)
+      .then(() => {
+        const newPersons = persons.filter((item) => item.id !== id)
+        setPersons(newPersons)
+        setMsg({
+          text: `Deleted ${name}`,
+          type: "success"})
+        setTimeout(() => {
+        setMsg(null)
+      }, 5000)
+      })
+      .catch(error => {
+        setMsg({
+          text: `${name} was already removed from the server`,
+          type: "error"})
+        console.log(error)
+        setTimeout(() => {
+          setMsg(null)
+        }, 5000)
+      })
+      : setPersons(filteredPersons)
+  }
+
   const handleFilterChange = (event) => {
     setFilter(event.target.value)
   }
@@ -66,20 +113,6 @@ const App = () => {
   }
   const handleNumberChange = (event) => {
     setNewNumber(event.target.value)
-  }
-  const handleDelete = (id, name) => {
-    window.confirm(`Delete ${name}?`) ?
-    personService
-      .deletePerson(id)
-      .then(() => {
-      const newPersons = persons.filter((item) => item.id !== id)
-      setPersons(newPersons)
-      setMsg(`Deleted ${newName}`)
-      setTimeout(() => {
-        setMsg(null)
-      }, 5000)
-      })
-      : setPersons(filteredPersons)
   }
 
   return (
