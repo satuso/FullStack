@@ -1,21 +1,57 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
+    width: 30%;
+}
+.contacts {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 1em;
 }
 .success {
     color: green;
     background: lightgrey;
-    font-size: 20px;
-    border-style: solid;
+    font-size: 1rem;
+    border: 2px solid green;
     border-radius: 5px;
-    padding: 10px;
-    margin-bottom: 10px;
+    padding: 1em;
+    margin-bottom: 1em;
 }
 .error {
     color: red;
     background: lightgrey;
-    font-size: 20px;
-    border-style: solid;
+    font-size: 1rem;
+    border: 2px solid red;
     border-radius: 5px;
-    padding: 10px;
-    margin-bottom: 10px;
+    padding: 1em;
+    margin-bottom: 1em;
+}
+button {
+    outline: none;
+    cursor: pointer;
+    background-color: darkblue;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    padding: .5em 1em;
+    opacity: 0.7;
+    transition: 0.3s;
+}
+button:hover,
+button:focus {
+    opacity: 1;
+}
+input {
+    outline: none;
+    padding: .5em;
+    margin: 1em;
+    border: 2px solid black;
+    border-radius: 5px;
+    color: darkblue;
+    font-weight: bold;
+}
+input:hover,
+input:focus {
+    border: 2px solid darkblue;
 }

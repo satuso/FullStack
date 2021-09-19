@@ -49,9 +49,9 @@ const App = () => {
       })
       .catch(error => {
         setMsg({
-          text: `Cannot update number ${error}`,
+          text: `Cannot update number`,
           type: "error"})
-        console.log(error, msg)
+        console.log(error)
       }) : setPersons(filteredPersons)
     } else {
       personService
@@ -84,7 +84,7 @@ const App = () => {
     personService
       .deletePerson(id)
       .then(() => {
-        const newPersons = persons.filter((item) => item.id !== id)
+        const newPersons = persons.filter(p => p.id !== id)
         setPersons(newPersons)
         setMsg({
           text: `Deleted ${name}`,

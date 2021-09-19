@@ -1,6 +1,9 @@
 const Persons = ({person, handleDelete}) => {
     return (
-        <p>{person.name} {person.number} <button onClick={() => handleDelete(person.id, person.name)}>delete</button></p>
+        <div className="contacts">
+            {person.name} {person.number}
+            <button onClick={() => handleDelete(person.id, person.name)}>delete</button>
+        </div>
     )
 }
 export default Persons

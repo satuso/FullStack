@@ -9,6 +9,7 @@ const PersonForm = (props) => {
                 name="name"
                 value={props.newName} 
                 onChange={props.handleNameChange}
+                maxlength="30"
             />
             <br />
             number:
@@ -16,6 +17,7 @@ const PersonForm = (props) => {
                 name="number"
                 value={props.newNumber} 
                 onChange={props.handleNumberChange}
+                maxlength="20"
             />
             </div>
             <div>
