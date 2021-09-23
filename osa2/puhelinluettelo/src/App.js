@@ -68,10 +68,10 @@ const App = () => {
         }, 5000)
       })
       .catch(error => {
+        const errorMsg = error.response.data.error
         setMsg({
-          text: `Cannot add ${newName}`,
+          text: `${errorMsg}`,
           type: "error"})
-        console.log(error)
         setTimeout(() => {
           setMsg(null)
         }, 5000)
@@ -95,7 +95,7 @@ const App = () => {
       })
       .catch(error => {
         setMsg({
-          text: `${name} was already removed from the server`,
+          text: `Cannot remove ${name}`,
           type: "error"})
         console.log(error)
         setTimeout(() => {
