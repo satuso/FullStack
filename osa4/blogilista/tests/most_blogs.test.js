@@ -51,9 +51,12 @@ const blogs = [
   }  
 ]
 
-describe('favourite blog', () => {
-  test('blog with the most likes', () => {
-    const result = listHelper.favoriteBlog(blogs)
-    expect(result).toEqual(blogs[2])
+describe('most blogs', () => {
+  test('writer with the most blogs', () => {
+    const result = listHelper.mostBlogs(blogs)
+    expect(result).toEqual({
+      author: 'Robert C. Martin',
+      blogs: 3
+    })
   })
 })
