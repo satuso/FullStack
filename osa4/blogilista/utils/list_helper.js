@@ -7,14 +7,20 @@ const totalLikes = (blogs) => {
     return 0
   } else {
     const reducer = (sum, item) => {
-      console.log(sum, item.likes)
       return sum + item.likes
     }
     return blogs.reduce(reducer, 0)
   }
 }
 
+const favoriteBlog = (blogs) => {
+  const result = blogs.reduce((accumulator, currentValue) => {
+    return accumulator.likes > currentValue.likes ? accumulator : currentValue})
+  return result
+}
+
 module.exports = {
   dummy,
-  totalLikes
+  totalLikes,
+  favoriteBlog
 }
