@@ -87,14 +87,35 @@ test('a blog can be deleted', async () => {
     .expect(204)
 
   const blogsAtEnd = await helper.blogsInDb()
-
   expect(blogsAtEnd).toHaveLength(
     helper.initialBlogs.length - 1
   )
 
   const title = blogsAtEnd.map(r => r.title)
-
   expect(title).not.toContain(blogToDelete.title)
+})
+
+test('a blog can be updated', async () => {
+  const blogsAtStart = await helper.blogsInDb()
+  const blogToUpdate = blogsAtStart[0]
+
+  const updatedBlog = {
+    title: 'Title3',
+    author: 'Author3',
+    url: 'Url3',
+    likes: 4
+  }
+
+  await api
+    .put(`/api/blogs/${blogToUpdate.id}`)
+    .send(updatedBlog)
+    .expect(200)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+
+  const likes = blogsAtEnd.map(b => b.likes)
+  expect(likes).toContainEqual(4)
 })
 
 afterAll(() => {
