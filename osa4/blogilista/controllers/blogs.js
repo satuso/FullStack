@@ -42,13 +42,22 @@ blogsRouter.post('/', middleware.tokenExtractor, async (request, response) => {
   response.json(savedBlog.toJSON())
 })
 
-blogsRouter.delete('/:id', async (request, response, next) => {
-  try {
-    await Blog.findByIdAndRemove(request.params.id)
-    response.status(204).end()
-  } catch (exception) {
-    next(exception)
+blogsRouter.delete('/:id', async (request, response) => {
+  const token = request.token
+  const decodedToken = jwt.verify(token, process.env.SECRET)
+  if (!token || !decodedToken.id) {
+    return response.status(401).json({ error: 'token missing or invalid' })
   }
+  const id = request.params.id
+  const blog = await Blog.findById(id)
+  if (blog.user.toString() === decodedToken.id) {
+    await Blog.findByIdAndRemove(id)
+    response.status(204).end()
+  }
+  return response.status(401).json({
+    error: 'you do not have permission to delete this blog'
+  })
+
 })
 
 blogsRouter.put('/:id', async (request, response, next) => {
