@@ -10,10 +10,12 @@ blogsRouter.get('/', async (request, response) => {
 })
 
 blogsRouter.get('/:id', async (request, response) => {
-  const id = Number(request.params.id)
-  const blogs = await blogs.find(blog => {
-    blog.id === id})
-  response.json(blogs)
+  const blog = await Blog.findById(request.params.id)
+  if (blog) {
+    response.json(blog.toJSON())
+  } else {
+    response.status(404).end()
+  }
 })
 
 blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
@@ -27,14 +29,17 @@ blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
     likes: body.likes | 0,
     user: user._id
   })
-
+  if (!request.token || !user._id) {
+    return response.status(401).json({ error: 'token missing or invalid' })
+  }
+  blog.user = user._id
   const savedBlog = await blog.save()
   user.blogs = user.blogs.concat(savedBlog._id)
   await user.save()
-  response.json(savedBlog.toJSON())
+  response.status(201).json(savedBlog.toJSON())
 })
 
-blogsRouter.delete('/:id', middleware.userExtractor, async (request, response, next) => {
+blogsRouter.delete('/:id', middleware.userExtractor, async (request, response) => {
   const id = request.params.id
   const blog = await Blog.findById(id)
   if (request.token && blog.user.toString() === request.user.id.toString()) {     
@@ -44,7 +49,6 @@ blogsRouter.delete('/:id', middleware.userExtractor, async (request, response, n
     response.status(403).json({ error: 'you are unauthorized to delete this blog' })
   }
 })
-
 
 blogsRouter.put('/:id', async (request, response, next) => {
   const body = request.body

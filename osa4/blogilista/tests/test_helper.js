@@ -1,5 +1,8 @@
 const Blog = require('../models/blog')
 const User = require('../models/user')
+const supertest = require('supertest')
+const app = require('../app')
+const api = supertest(app)
 
 const initialBlogs = [
   {
@@ -18,12 +21,24 @@ const initialBlogs = [
   }
 ]
 
+beforeAll(async () => {
+  await User.deleteMany({})
+  const user = {
+    username: 'tester',
+    name: 'name',
+    password: 'password'
+  }
+
+  await api
+    .post('/api/users')
+    .send(user)
+    .set('Accept', 'application/json')
+    .expect(200)
+})
+
 beforeEach(async () => {
   await Blog.deleteMany({})
-  let blogObject = new Blog(initialBlogs[0])
-  await blogObject.save()
-  blogObject = new Blog(initialBlogs[1])
-  await blogObject.save()
+  await Blog.insertMany(initialBlogs)
 })
 
 const nonExistingId = async () => {
