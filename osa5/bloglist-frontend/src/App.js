@@ -12,9 +12,6 @@ const App = () => {
   const [message, setMessage] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const [user, setUser] = useState(null)
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -46,30 +43,6 @@ const App = () => {
       setPassword('')
     } catch (exception) {
       setErrorMessage('wrong username or password')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
-    }
-  }
-
-  const createNew = async (event) => {
-    event.preventDefault()
-    try {
-      const blog = await blogService.create({
-        title, author, url
-      })
-      setUser(user)
-      setTitle('')
-      setAuthor('')
-      setUrl('')
-      setMessage(`added blog ${blog.title} ${blog.author}`)
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000)
-
-      setBlogs(blogs.concat(blog))
-    } catch (exception) {
-      setErrorMessage('error')
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
@@ -127,13 +100,12 @@ const App = () => {
           <p className="error">{errorMessage}</p>
           <p className="success">{message}</p>
           <CreateForm 
-            createNew={createNew}
-            title={title}
-            setTitle={setTitle}
-            author={author}
-            setAuthor={setAuthor}
-            url={url}
-            setUrl={setUrl}
+            setMessage={setMessage}
+            setErrorMessage={setErrorMessage}
+            user={user}
+            setUser={setUser}
+            blogs={blogs}
+            setBlogs={setBlogs}
           />
           <button onClick={() => setCreateVisible(false)}>cancel</button>
         </div>
