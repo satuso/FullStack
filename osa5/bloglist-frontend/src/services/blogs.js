@@ -16,10 +16,14 @@ const create = async newObject => {
   const config = {
     headers: { Authorization: token },
   }
-
   const response = await axios.post(baseUrl, newObject, config)
   return response.data
 }
 
-const object = {getAll, create, setToken}
+const update = async (id, newObject) => {
+  const response = await axios.put(`${baseUrl}/${id}`, newObject)
+  return response.data
+};
+
+const object = {getAll, create, update, setToken}
 export default object

@@ -48,6 +48,14 @@ const App = () => {
       }, 5000)
     }
   }
+  
+  const updateBlog = async (blogId, blogObject) => {
+    await blogService.update(blogId, blogObject)
+    const updatedBlog = {...blogObject, blogId}
+    setBlogs(
+      blogs.map(blog => (blog.id === updatedBlog.id ? updatedBlog : blog))
+    )
+  }
 
   const hideWhenVisible = { display: createVisible ? 'none' : '' }
   const showWhenVisible = { display: createVisible ? '' : 'none' }
@@ -96,9 +104,9 @@ const App = () => {
         <div style={hideWhenVisible}>
           <button onClick={() => setCreateVisible(true)}>create</button>
         </div>
+        <p className="error">{errorMessage}</p>
+        <p className="success">{message}</p>
         <div style={showWhenVisible}>
-          <p className="error">{errorMessage}</p>
-          <p className="success">{message}</p>
           <CreateForm 
             setMessage={setMessage}
             setErrorMessage={setErrorMessage}
@@ -113,7 +121,11 @@ const App = () => {
       </div>
         <br />
         {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
+          <Blog 
+            key={blog.id} 
+            blog={blog} 
+            updateBlog={updateBlog}
+          />
         )}
       </>
       }
