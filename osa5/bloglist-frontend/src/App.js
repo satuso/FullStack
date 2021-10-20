@@ -106,6 +106,7 @@ const App = () => {
             setUser={setUser}
             blogs={blogs}
             setBlogs={setBlogs}
+            setCreateVisible={setCreateVisible}
           />
           <button onClick={() => setCreateVisible(false)}>cancel</button>
         </div>

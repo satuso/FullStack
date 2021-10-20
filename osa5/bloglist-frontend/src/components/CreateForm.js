@@ -7,7 +7,8 @@ const CreateForm = ({
   user,
   setUser,
   blogs,
-  setBlogs
+  setBlogs,
+  setCreateVisible
   }) => {
 
   const [title, setTitle] = useState('')
@@ -28,8 +29,8 @@ const CreateForm = ({
       setTimeout(() => {
         setMessage(null)
       }, 5000)
-
       setBlogs(blogs.concat(blog))
+      setCreateVisible(false)
     } catch (exception) {
       setErrorMessage('error')
       setTimeout(() => {
