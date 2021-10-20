@@ -32,7 +32,7 @@ const App = () => {
     event.preventDefault()
     try {
       const user = await loginService.login({
-        username, password,
+        username, password
       })
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
@@ -52,11 +52,32 @@ const App = () => {
   const updateBlog = async (blogId, blogObject) => {
     await blogService.update(blogId, blogObject)
     const updatedBlog = {...blogObject, blogId}
+    setUser(user)
     setBlogs(
       blogs.map(blog => (blog.id === updatedBlog.id ? updatedBlog : blog))
     )
   }
 
+  const removeBlog = async (id, blogObject, user) => {
+    window.confirm(`Remove blog ${blogObject.title} by ${blogObject.author}?`)
+    try {
+    await blogService.remove(id, blogObject, user)
+    setUser(user)
+    const updatedBlogs = blogs.filter(blog => blog.id !== id)
+    setBlogs(updatedBlogs)
+    setMessage(`removed blog ${blogObject.title} ${blogObject.author}`)
+    setTimeout(() => {
+      setMessage(null)
+    }, 5000)
+    }
+    catch (exception){
+      setErrorMessage('error')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
+  
   const hideWhenVisible = { display: createVisible ? 'none' : '' }
   const showWhenVisible = { display: createVisible ? '' : 'none' }
 
@@ -125,6 +146,9 @@ const App = () => {
             key={blog.id} 
             blog={blog} 
             updateBlog={updateBlog}
+            removeBlog={removeBlog}
+            user={user}
+            setUser={setUser}
           />
         )}
       </>
