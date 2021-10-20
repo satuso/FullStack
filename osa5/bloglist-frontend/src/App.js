@@ -48,7 +48,7 @@ const App = () => {
       }, 5000)
     }
   }
-  
+
   const updateBlog = async (blogId, blogObject) => {
     await blogService.update(blogId, blogObject)
     const updatedBlog = {...blogObject, blogId}
@@ -120,7 +120,7 @@ const App = () => {
         </div>
       </div>
         <br />
-        {blogs.map(blog =>
+        {blogs.sort((min, max) => max.likes - min.likes).map(blog =>
           <Blog 
             key={blog.id} 
             blog={blog} 
