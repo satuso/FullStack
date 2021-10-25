@@ -1,6 +1,6 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
-const Blog = ({blog, updateBlog, user, setUser, removeBlog}) => {
+const Blog = ({ blog, updateBlog, user, setUser, removeBlog }) => {
   const [viewToggle, setViewToggle] = useState(false)
 
   const blogStyle = {
@@ -13,7 +13,7 @@ const Blog = ({blog, updateBlog, user, setUser, removeBlog}) => {
 
   const addLike = (event) => {
     event.preventDefault()
-    const updatedBlog = {...blog, likes: blog.likes + 1}
+    const updatedBlog = { ...blog, likes: blog.likes + 1 }
     updateBlog(blog.id, updatedBlog)
     setUser(user)
   }

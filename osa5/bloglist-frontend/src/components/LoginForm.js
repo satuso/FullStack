@@ -1,4 +1,4 @@
-import React from "react"
+import React from 'react'
 import PropTypes from 'prop-types'
 
 const LoginForm = ({
@@ -9,7 +9,7 @@ const LoginForm = ({
   setUsername,
   password,
   setPassword
-  }) => {
+}) => {
 
   return (
     <div>
@@ -18,21 +18,21 @@ const LoginForm = ({
       <p className="success">{message}</p>
       <form onSubmit={handleLogin}>
         <label>username:
-        <input 
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
+          <input
+            type="text"
+            value={username}
+            name="Username"
+            onChange={({ target }) => setUsername(target.value)}
+          />
         </label>
         <br />
         <label>password:
-        <input 
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        /></label>
+          <input
+            type="password"
+            value={password}
+            name="Password"
+            onChange={({ target }) => setPassword(target.value)}
+          /></label>
         <br />
         <button type="submit">login</button>
       </form>
