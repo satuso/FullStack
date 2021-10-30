@@ -14,7 +14,7 @@ describe('test blog component', () => {
       name: 'name',
     }
   }
-  const user = blog.user.name
+  const user = blog.user.username
 
   test('renders title and author', () => {
     const component = render(
@@ -42,5 +42,24 @@ describe('test blog component', () => {
 
     expect(component.container).toHaveTextContent(blog.likes)
     expect(component.container).toHaveTextContent(blog.url)
+  })
+
+  test('eventhandler is called twice when like button is clicked twice', () => {
+    const mockHandler = jest.fn()
+    const component = render(
+      <Blog
+        blog={blog}
+        user={user}
+        updateBlog={mockHandler}
+      />
+    )
+    const viewButton = component.getByText('view')
+    fireEvent.click(viewButton)
+
+    const likeButton = component.getByText('like')
+    fireEvent.click(likeButton)
+    fireEvent.click(likeButton)
+
+    expect(mockHandler.mock.calls).toHaveLength(2)
   })
 })

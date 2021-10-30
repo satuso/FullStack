@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const Blog = ({ blog, updateBlog, user, setUser, removeBlog }) => {
+const Blog = ({ blog, updateBlog, user, removeBlog }) => {
   const [viewToggle, setViewToggle] = useState(false)
 
   const blogStyle = {
@@ -15,7 +15,6 @@ const Blog = ({ blog, updateBlog, user, setUser, removeBlog }) => {
     event.preventDefault()
     const updatedBlog = { ...blog, likes: blog.likes + 1 }
     updateBlog(blog.id, updatedBlog)
-    setUser(user)
   }
 
   const hideWhenVisible = { display: viewToggle ? 'none' : '' }
@@ -27,7 +26,7 @@ const Blog = ({ blog, updateBlog, user, setUser, removeBlog }) => {
         {blog.title} {blog.author} <button onClick={() => setViewToggle(true)}>view</button>
       </div>
       <div style={showWhenVisible} className='blog'>
-        {blog.title} {blog.author} <button onClick={() => setViewToggle(false)}>view</button><br />
+        {blog.title} {blog.author} <button onClick={() => setViewToggle(false)}>hide</button><br />
         {blog.url}<br />
         likes {blog.likes} <button onClick={addLike}>like</button><br />
         {blog.user.name}<br />
