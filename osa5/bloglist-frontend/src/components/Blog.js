@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 
 const Blog = ({ blog, updateBlog, user, removeBlog }) => {
   const [viewToggle, setViewToggle] = useState(false)
+  const [username, setUsername] = useState(user.username)
 
   const blogStyle = {
     paddingTop: 10,
@@ -15,6 +16,7 @@ const Blog = ({ blog, updateBlog, user, removeBlog }) => {
     event.preventDefault()
     const updatedBlog = { ...blog, likes: blog.likes + 1 }
     updateBlog(blog.id, updatedBlog)
+    setUsername(blog.user.username)
   }
 
   const hideWhenVisible = { display: viewToggle ? 'none' : '' }
@@ -29,8 +31,8 @@ const Blog = ({ blog, updateBlog, user, removeBlog }) => {
         {blog.title} {blog.author} <button onClick={() => setViewToggle(false)}>view</button><br />
         {blog.url}<br />
         likes {blog.likes} <button onClick={addLike}>like</button><br />
-        {blog.user.name}<br />
-        {user.username !== blog.user.username ? null : <button onClick={() => removeBlog(blog.id, blog, user)}>remove</button>}
+        {username}<br />
+        {user.username === username && <button onClick={() => removeBlog(blog.id, blog, user)}>remove</button>}
       </div>
     </div>
   )
