@@ -47,5 +47,17 @@ describe('Bloglist app', function() {
       cy.contains('save').click()
       cy.contains('new blog title')
     })
+
+    it('A blog can be liked', function() {
+      cy.contains('create').click()
+      cy.get('#title').type('new blog title')
+      cy.get('#author').type('author')
+      cy.get('#url').type('blog.com')
+      cy.contains('save').click()
+      cy.contains('new blog title')
+      cy.contains('view').click()
+      cy.contains('like').click()
+      cy.contains('likes 1')
+    })
   })
 })
