@@ -46,6 +46,7 @@ const CreateForm = ({
         <label>title:
           <input
             type="text"
+            id="title"
             value={title}
             name="Title"
             onChange={({ target }) => setTitle(target.value)}
@@ -55,6 +56,7 @@ const CreateForm = ({
         <label>author:
           <input
             type="text"
+            id="author"
             value={author}
             name="Author"
             onChange={({ target }) => setAuthor(target.value)}
@@ -64,13 +66,14 @@ const CreateForm = ({
         <label>url:
           <input
             type="text"
+            id="url"
             value={url}
             name="Url"
             onChange={({ target }) => setUrl(target.value)}
           />
         </label>
         <br />
-        <button type="submit">create</button>
+        <button id="create" type="submit">save</button>
       </form>
     </div>
   )
