@@ -26,7 +26,7 @@ const Blog = ({ blog, updateBlog, user, removeBlog }) => {
         {blog.title} {blog.author} <button onClick={() => setViewToggle(true)}>view</button>
       </div>
       <div style={showWhenVisible} className='blog'>
-        {blog.title} {blog.author} <button onClick={() => setViewToggle(false)}>hide</button><br />
+        {blog.title} {blog.author} <button onClick={() => setViewToggle(false)}>view</button><br />
         {blog.url}<br />
         likes {blog.likes} <button onClick={addLike}>like</button><br />
         {blog.user.name}<br />
