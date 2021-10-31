@@ -4,13 +4,18 @@ const User = require('../models/user')
 const middleware = require('../utils/middleware')
 
 blogsRouter.get('/', async (request, response) => {
-  const blogs = await Blog
-    .find({}).populate('user', { username: 1, name: 1 })
+  const blogs = await Blog.find({}).populate('user', { 
+    username: 1,
+    name: 1 
+  })
   response.json(blogs)
 })
 
 blogsRouter.get('/:id', async (request, response) => {
-  const blog = await Blog.findById(request.params.id)
+  const blog = await Blog.findById(request.params.id).populate('user', {
+    username: 1,
+    name: 1,
+  })
   if (blog) {
     response.json(blog.toJSON())
   } else {
@@ -33,11 +38,15 @@ blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
   if (!request.token || !user._id) {
     return response.status(401).json({ error: 'token missing or invalid' })
   }
-  blog.user = user._id
   const savedBlog = await blog.save()
-  user.blogs = user.blogs.concat(savedBlog._id)
+  user.blogs = user.blogs.concat(savedBlog.id)
   await user.save()
-  response.status(201).json(savedBlog.toJSON())
+
+  const populatedBlog = await savedBlog
+    .populate('user', { username: 1, name: 1 })
+    .execPopulate()
+
+  response.status(201).json(populatedBlog.toJSON())
 })
 
 blogsRouter.delete('/:id', middleware.userExtractor, async (request, response) => {
@@ -61,11 +70,12 @@ blogsRouter.put('/:id', async (request, response, next) => {
     likes: body.likes | 0
   }
 
-  await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
-    .then(updatedBlog => {
-      response.json(updatedBlog)
-    })
-    .catch(error => next(error))
+  const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
+  const populatedBlog = await updatedBlog
+    .populate('user', { username: 1, name: 1 })
+    .execPopulate()
+
+  response.json(populatedBlog.toJSON())
 })
 
 module.exports = blogsRouter

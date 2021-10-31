@@ -33,10 +33,7 @@ describe('Bloglist app', function() {
   })
   describe('When logged in', function() {
     beforeEach(function() {
-      cy.contains('login').click()
-      cy.get('#username').type('aku2')
-      cy.get('#password').type('password')
-      cy.get('#login-button').click()
+      cy.login({ username: 'aku2', password: 'password' })
     })
 
     it('A blog can be created', function() {
@@ -70,6 +67,24 @@ describe('Bloglist app', function() {
       cy.contains('view').click()
       cy.contains('remove').click()
       cy.contains('removed blog new blog title')
+    })
+
+    it('Blogs are sorted by likes', function() {
+      cy.createBlog({
+        title: 'first blog',
+        author: 'author1',
+        url: 'blog1.com',
+        likes: 5
+      })
+
+      cy.createBlog({
+        title: 'second blog',
+        author: 'author2',
+        url: 'blog2.com',
+        likes: 0
+      })
+      cy.contains('view').click()
+      cy.contains('likes 5')
     })
   })
 })
