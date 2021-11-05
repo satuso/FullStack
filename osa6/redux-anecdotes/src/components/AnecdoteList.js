@@ -7,7 +7,7 @@ const AnecdoteList = () => {
   const dispatch = useDispatch()
   const anecdotes = useSelector(state => state.anecdotes)
 
-  const vote = (id) => {
+  const vote =  async (id) => {
     const votedAnecdote = anecdotes.find(anecdote => anecdote.id === id)
     dispatch(addVote(id))
     dispatch(
