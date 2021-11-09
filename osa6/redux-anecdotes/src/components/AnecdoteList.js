@@ -1,6 +1,6 @@
 import React from 'react'
 import { addVote } from '../reducers/anecdoteReducer'
-import { setNotification, clearNotification } from '../reducers/notificationReducer'
+import { setNotification } from '../reducers/notificationReducer'
 import { useSelector, useDispatch } from 'react-redux'
 
 const AnecdoteList = () => {
@@ -10,14 +10,7 @@ const AnecdoteList = () => {
   const vote =  async (id) => {
     const votedAnecdote = anecdotes.find(anecdote => anecdote.id === id)
     dispatch(addVote(id))
-    dispatch(
-      setNotification({
-        msg: `voted anecdote "${votedAnecdote.content}"`,
-      })
-    )
-    setTimeout(() => {
-      dispatch(clearNotification())
-    }, 5000)
+    dispatch(setNotification(`voted anecdote "${votedAnecdote.content}"`, 10))
   }
 
   const anecdotesCopy = anecdotes.concat()
