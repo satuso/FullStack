@@ -7,7 +7,7 @@ const AnecdoteList = (props) => {
   const vote =  async (id) => {
     const votedAnecdote = props.anecdotes.find(anecdote => anecdote.id === id)
     props.addVote(id)
-    props.setNotification(`voted anecdote "${votedAnecdote.content}"`, 10)
+    props.setNotification(`voted anecdote "${votedAnecdote.content}"`, 5)
   }
 
   const anecdotesCopy = props.anecdotes.concat()
