@@ -5,3 +5,4 @@
 * [part3](https://github.com/satuso/phonebook)
 * [part4](https://github.com/satuso/fullstack/tree/main/osa4)
 * [part5](https://github.com/satuso/fullstack/tree/main/osa5)
+* [part6](https://github.com/satuso/fullstack/tree/main/osa6)
