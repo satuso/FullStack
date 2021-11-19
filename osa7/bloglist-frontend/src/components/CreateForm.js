@@ -1,44 +1,28 @@
 import React, { useState } from 'react'
-import blogService from '../services/blogs'
-import { setNotification } from '../reducers/notificationReducer'
-import { useDispatch } from 'react-redux'
 
-const CreateForm = ({
-  user,
-  setUser,
-  blogs,
-  setBlogs,
-  setCreateVisible
-}) => {
-
+const CreateForm = ({ setViewToggle, createBlog }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
 
-  const dispatch = useDispatch()
-
-  const createNew = async (event) => {
+  const handleBlogForm = (event) => {
     event.preventDefault()
-    try {
-      const blog = await blogService.create({
-        title, author, url
-      })
-      setUser(user)
-      setTitle('')
-      setAuthor('')
-      setUrl('')
-      dispatch(setNotification(`added blog ${blog.title} ${blog.author}`, 10))
-      setBlogs(blogs.concat(blog))
-      setCreateVisible(false)
-    } catch (exception) {
-      dispatch(setNotification('error', 10))
+    const newBlog = {
+      title,
+      author,
+      url
     }
+    createBlog(newBlog)
+    setTitle('')
+    setAuthor('')
+    setUrl('')
+    setViewToggle(false)
   }
 
   return (
     <div>
       <h2>create new</h2>
-      <form onSubmit={createNew}>
+      <form onSubmit={handleBlogForm}>
         <label>title:
           <input
             type="text"
