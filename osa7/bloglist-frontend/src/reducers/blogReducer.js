@@ -1,14 +1,11 @@
 import blogService from '../services/blogs'
 
 export const blogReducer = (state = [], action) => {
-
   switch (action.type) {
   case 'LIKE_BLOG':
-    return state.map(blog =>
-      blog.id === action.data.id
-        ? { ...blog, likes: action.data.likes }
-        : blog
-    )
+    // eslint-disable-next-line no-case-declarations
+    const id = action.data.id
+    return state.map(blog => blog.id !== id ? blog : action.data.data)
   case 'NEW_BLOG':
     return [...state, action.data]
   case 'INIT_BLOGS':
@@ -37,23 +34,28 @@ export const createBlog = newBlog => {
   }
 }
 
-export const updateBlog = updatedBlog => {
+export const updateBlog = blog => {
+  const updatedBlog = {
+    ...blog,
+    likes: blog.likes + 1
+  }
   return async dispatch => {
-    const blog = await blogService.update(updatedBlog)
+    const newBlog = await blogService.update(blog.id, updatedBlog)
     dispatch({
       type: 'UPDATE_BLOG',
-      data: blog
+      data: newBlog
     })
   }
 }
 
-export const removeBlog = blogToRemove => {
+export const removeBlog = blog => {
   return async dispatch => {
-    const removedBlog = await blogService.remove(blogToRemove)
+    const removedBlog = await blogService.remove(blog)
     dispatch({
       type: 'REMOVE_BLOG',
       data: removedBlog
     })
   }
 }
+
 export default blogReducer

@@ -1,37 +1,32 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { Link } from 'react-router-dom'
+import Notification from './Notification'
 
-const Blog = ({ blog, updateBlog, user, removeBlog }) => {
-  const [viewToggle, setViewToggle] = useState(false)
-
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5,
+const Blog = ({ user, updateBlog, removeBlog, blogMatch }) => {
+  if (!blogMatch) {
+    return null
   }
 
   const addLike = (event) => {
     event.preventDefault()
-    const updatedBlog = { ...blog, likes: blog.likes + 1 }
-    updateBlog(blog.id, updatedBlog)
+    const updatedBlog = { ...blogMatch, likes: blogMatch.likes + 1 }
+    updateBlog(blogMatch.id, updatedBlog)
   }
 
-  const hideWhenVisible = { display: viewToggle ? 'none' : '' }
-  const showWhenVisible = { display: viewToggle ? '' : 'none' }
+  const comments = blogMatch.comments
 
   return (
-    <div style={blogStyle}>
-      <div style={hideWhenVisible}>
-        {blog.title} {blog.author} <button onClick={() => setViewToggle(true)}>view</button>
-      </div>
-      <div style={showWhenVisible} className='blog'>
-        {blog.title} {blog.author} <button onClick={() => setViewToggle(false)}>view</button><br />
-        {blog.url}<br />
-        likes {blog.likes} <button onClick={addLike}>like</button><br />
-        {blog.user.username}<br />
-        {user.username === blog.user.username && <button onClick={() => removeBlog(blog.id, blog, user)}>remove</button>}
-      </div>
+    <div className="container">
+      <Notification />
+      <h2>{blogMatch.title} by {blogMatch.author}</h2>
+      <a href={blogMatch.url} target="blank_">{blogMatch.url}</a>
+      <p>{blogMatch.likes} likes <button onClick={addLike}>like</button></p>
+      <p>added by <b><Link to={`/users/${blogMatch.user.id}`}>{blogMatch.user.username}</Link></b></p>
+      {user.username === blogMatch.user.username && <button onClick={() => removeBlog(blogMatch.id, blogMatch, user)}>remove</button>}
+      <h3>Comments</h3>
+      <ul>
+        {comments.map(comment => <li key={comment.id}>{comment.content}</li>)}
+      </ul>
     </div>
   )
 }
