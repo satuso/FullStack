@@ -18,3 +18,69 @@ body {
   align-items: baseline;
   background-color: lightgray;
 }
+.nav a {
+  padding-right: 1em;
+  color: black;
+  font-weight: bold;
+  text-decoration: none;
+}
+.nav a:hover {
+  color: darkblue;
+}
+.nav button {
+  cursor: pointer;
+  background-color: darkblue;
+  border: none;
+  color: white;
+  margin: .5em;
+  padding: .5em 1em;
+  border-radius: 5px;
+  text-transform: uppercase;
+}
+.nav button:hover {
+  background-color: darkblue;
+  color: lightgray;
+}
+button {
+  cursor: pointer;
+  background-color: lightgray;
+  border: 2px solid lightgray;
+  color: black;
+  margin: .5em;
+  padding: .2em .6em;
+  margin-left: 0;
+  border-radius: 5px;
+  text-transform: uppercase;
+}
+button:hover {
+  background-color: lightgray;
+  color: darkblue;
+}
+a {
+  color: darkblue;
+  font-weight: bold;
+  text-decoration: none;
+}
+a:hover {
+  color: gray;
+}
+input {
+  outline: none;
+  border: 2px solid lightgray;
+  border-radius: 5px;
+  padding: .2em .6em;
+  margin: .2em;
+  color: darkblue;
+  font-weight: bold;
+}
+input:hover,
+input:focus {
+  border: 2px solid darkblue;
+}
+.blogs-list {
+  line-height: 2;
+}
+table {
+  margin: 0;
+  padding: 0;
+}

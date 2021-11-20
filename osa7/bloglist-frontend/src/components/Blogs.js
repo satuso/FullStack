@@ -35,7 +35,7 @@ const Blogs = ({
         </div>
         <br />
         {blogs.sort((min, max) => max.likes - min.likes).map(blog =>
-          <div key={blog.id}>
+          <div key={blog.id} className="blogs-list">
             <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
           </div>
         )}
