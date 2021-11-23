@@ -26,11 +26,6 @@ let authors = [
   },
 ]
 
-/*
- * Saattaisi olla järkevämpää assosioida kirja ja sen tekijä tallettamalla kirjan yhteyteen tekijän nimen sijaan tekijän id
- * Yksinkertaisuuden vuoksi tallennamme kuitenkin kirjan yhteyteen tekijän nimen
-*/
-
 let books = [
   {
     title: 'Clean Code',
@@ -87,7 +82,8 @@ const typeDefs = gql`
   type Query {
     bookCount: Int!,
     authorCount: Int!,
-    allBooks: [Book!]!
+    allBooks: [Book!]!,
+    allAuthors: [Author!]!,
   }
   type Book {
     title: String!
@@ -96,6 +92,12 @@ const typeDefs = gql`
     genres: [String!]
     id: ID! 
   }
+  type Author {
+    name: String!,
+    born: String,
+    id: ID!,
+    bookCount: Int
+  }
   
 `
 
@@ -103,7 +105,13 @@ const resolvers = {
   Query: {
     bookCount: () => books.length,
     authorCount: () => authors.length,
-    allBooks: () => books
+    allBooks: () => books,
+    allAuthors: () => authors
+  },
+  Author: {
+    bookCount: (root) => {
+      return books.filter(book => book.author === root.name).length
+    }
   }
 }
 
