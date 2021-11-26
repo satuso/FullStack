@@ -9,6 +9,7 @@ const ALL_DATA = gql`
     allAuthors  {
       name,
       born,
+      bookCount,
       id
     },
     allBooks  {
@@ -44,6 +45,7 @@ const App = () => {
 
       <Books
         show={page === 'books'}
+        books={result.data.allBooks}
       />
 
       <NewBook
