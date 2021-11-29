@@ -23,13 +23,14 @@ const ALL_DATA = gql`
 `
 const App = () => {
   const [page, setPage] = useState('authors')
-  const result = useQuery(ALL_DATA)
+  const result = useQuery(ALL_DATA, {
+    pollInterval: 2000
+  })
 
   if (result.loading)  {
     return <div>loading...</div>
   }
 
-  console.log("authors", result.data.allAuthors)
   return (
     <div>
       <div>
