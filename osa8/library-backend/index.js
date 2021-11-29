@@ -131,7 +131,6 @@ const resolvers = {
     addBook: (root, args) => {
       const book = { ...args, id: uuid() }
       books = books.concat(book)
-      console.log(books)
       return book
     },
     editAuthor: (root, args) => {
@@ -141,7 +140,6 @@ const resolvers = {
       }
       const updatedAuthor = { ...author, born: args.setBornTo }
       authors = authors.map(author => (author.name ? updatedAuthor : author))
-      console.log(authors, updatedAuthor)
       return updatedAuthor
     }
   }

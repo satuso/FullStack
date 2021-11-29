@@ -1,6 +1,37 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { gql, useMutation } from '@apollo/client'
 
 const Authors = (props) => {
+
+  const UPDATE_AUTHOR = gql`
+    mutation updateAuthor($name: String!, $born: Int) {
+      editAuthor(name: $name, setBornTo: $born) {
+        name
+        born
+      }
+    }
+  `
+
+  const [name, setName] = useState('')
+  const [born, setBorn ] = useState('')
+
+  const [ updateAuthor, result ] = useMutation(UPDATE_AUTHOR)
+
+  const submit = async (event) => {
+    event.preventDefault()
+    console.log('edit author...')
+    updateAuthor({  variables: { name, born: parseInt(born) } })
+    setName('')
+    setBorn('')
+    console.log(`updated ${name}, born ${born}`)
+  }
+
+  useEffect(() => {
+    if (result.data && result.data.editAuthor === null) {
+      console.log('author not found')
+    }
+  }, [result.data])
+
   if (!props.show) {
     return null
   }
@@ -28,7 +59,29 @@ const Authors = (props) => {
           )}
         </tbody>
       </table>
-
+      <h3>set birthyear</h3>
+      <form onSubmit={submit}>
+      <div>
+        name: 
+        <input
+          value={name}
+          onChange={({ target }) => setName(target.value)}
+        >
+        </input>
+      </div>
+      <div>
+        born:
+        <input
+          value={born}
+          type='number'
+          onChange={({ target }) => setBorn(target.value)}
+        >
+        </input>
+      </div>
+      <div>
+        <button type='submit'>submit</button>
+      </div>
+      </form>
     </div>
   )
 }
