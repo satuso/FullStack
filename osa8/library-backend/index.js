@@ -131,6 +131,8 @@ const resolvers = {
     addBook: (root, args) => {
       const book = { ...args, id: uuid() }
       books = books.concat(book)
+      const author = { "name": args.author, "born": null, id: uuid() }
+      authors = authors.concat(author)
       return book
     },
     editAuthor: (root, args) => {
@@ -139,7 +141,7 @@ const resolvers = {
         return null
       }
       const updatedAuthor = { ...author, born: args.setBornTo }
-      authors = authors.map(author => (author.name ? updatedAuthor : author))
+      authors = authors.map(author => author.name === updatedAuthor.name ? updatedAuthor : author)
       return updatedAuthor
     }
   }
