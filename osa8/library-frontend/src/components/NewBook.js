@@ -11,7 +11,9 @@ const NewBook = (props) => {
       genres: $genres
     ) {
       title
-      author
+      author {
+        name
+      }
       published
       genres
       id
@@ -31,14 +33,13 @@ const NewBook = (props) => {
 
   const submit = async (event) => {
     event.preventDefault()
-    console.log('add book...')
     createBook({  variables: { title, author, published : parseInt(published), genres } })
     setTitle('')
     setPublished('')
     setAuthor('')
     setGenres([])
     setGenre('')
-    console.log(`added book ${title} by ${author}`)
+    props.setPage('books')
   }
 
   const addGenre = () => {

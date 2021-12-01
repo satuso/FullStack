@@ -10,7 +10,7 @@ const schema = new mongoose.Schema({
   },
   born: {
     type: Number,
-  },
+  }
 })
 
 schema.plugin(uniqueValidator)
