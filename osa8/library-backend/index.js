@@ -23,6 +23,7 @@ mongoose.connect(MONGODB_URI)
 const typeDefs = gql`
   type User {
     username: String!
+    favoriteGenre: String!
     id: ID!
   }
 
@@ -39,17 +40,17 @@ const typeDefs = gql`
   }
 
   type Author {
-    name: String!,
-    born: String,
-    id: ID!,
+    name: String!
+    born: String
+    id: ID!
     bookCount: Int
   }
 
   type Query {
-    bookCount: Int!,
-    authorCount: Int!,
-    allBooks(author: String genre: String): [Book!]!,
-    allAuthors: [Author!]!,
+    bookCount: Int!
+    authorCount: Int!
+    allBooks(author: String genre: String): [Book!]!
+    allAuthors: [Author!]!
     me: User
   }
 
@@ -60,18 +61,13 @@ const typeDefs = gql`
       author: String
       genres: [String!]
     ): Book
-  }
-
-  type Mutation {
     editAuthor(
       name: String!
       setBornTo: Int
     ): Author
-  }
-
-  type Mutation {
     createUser(
       username: String!
+      favoriteGenre: String!
     ): User
     login(
       username: String!
@@ -96,8 +92,14 @@ const resolvers = {
     }
   },
   Mutation: {
-    addBook: async (root, args) => {
+    addBook: async (root, args, context) => {
       let author = await Author.findOne({ name: args.author })
+      const currentUser = context.currentUser
+
+      if (!currentUser) {
+        throw new AuthenticationError("not authenticated")
+      }
+
       if (!author) {
         const newAuthor = new Author({ name: args.author, born: null, id: uuid() })
         author = await newAuthor.save()
@@ -112,8 +114,14 @@ const resolvers = {
       }
       return book
     },
-    editAuthor: async (root, args) => {
+    editAuthor: async (root, args, context) => {
       const author = await Author.findOne({ name: args.name })
+      const currentUser = context.currentUser
+
+      if (!currentUser) {
+        throw new AuthenticationError("not authenticated")
+      }
+
       if (!author) {
         return null
       }
@@ -130,15 +138,16 @@ const resolvers = {
         })
       }
     },
-    createUser: (root, args) => {
-      const user = new User({ username: args.username })
-  
-      return user.save()
-        .catch(error => {
+    createUser: async (root, args) => {
+      const user = new User({ username: args.username, favoriteGenre: args.favoriteGenre })
+      try { 
+        await user.save()
+      } catch(error) {
           throw new UserInputError(error.message, {
             invalidArgs: args,
           })
-        })
+      }
+      return user
     },
     login: async (root, args) => {
       const user = await User.findOne({ username: args.username })
