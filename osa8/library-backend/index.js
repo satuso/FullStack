@@ -81,14 +81,14 @@ const resolvers = {
     bookCount: async () => await Book.collection.countDocuments(),
     authorCount: async () => await Author.collection.countDocuments(),
     allAuthors: async () => await Author.find({}),
-    allBooks: async () => await Book.find({}),
+    allBooks: async () => await Book.find({}).populate('author'),
     me: (root, args, context) => {
       return context.currentUser
     }
   },
   Author: {
     bookCount: async (root) => {
-      await Book.collection.filter(book => book.author === root.name).countDocuments()
+      await Book.collection.countDocuments()
     }
   },
   Mutation: {

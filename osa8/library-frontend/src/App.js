@@ -6,23 +6,27 @@ import { gql, useQuery } from '@apollo/client'
 
 const ALL_DATA = gql`
   query {
-    allAuthors  {
-      name,
-      born,
-      bookCount,
+    allAuthors {
+      name
+      born
       id
+      bookCount
     },
-    allBooks  {
-      title,
-      published,
-      author,
-      genres,
-      id
+    allBooks {
+      title
+      published
+      author {
+        name
+        born
+        id
+        bookCount
+      }
     }
   }
 `
 const App = () => {
   const [page, setPage] = useState('authors')
+
   const result = useQuery(ALL_DATA, {
     pollInterval: 2000
   })
@@ -30,7 +34,8 @@ const App = () => {
   if (result.loading)  {
     return <div>loading...</div>
   }
-
+  const books = result.data ? result.data.allBooks : []
+  console.log(books)
   return (
     <div>
       <div>
