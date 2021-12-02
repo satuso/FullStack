@@ -48,6 +48,8 @@ const Authors = (props) => {
           )}
         </tbody>
       </table>
+      {props.token &&
+      <div>
       <h3>set birthyear</h3>
       <form onSubmit={submit}>
       <div>
@@ -68,7 +70,7 @@ const Authors = (props) => {
       <div>
         <button type='submit'>submit</button>
       </div>
-      </form>
+      </form></div>}
     </div>
   )
 }

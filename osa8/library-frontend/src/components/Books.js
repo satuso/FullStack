@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const Books = ({ books, setBooks, show }) => {
+const Books = ({ books, show }) => {
   const [genre, setGenre] = useState(null)
 
   const filterBooks = !genre ? books : books.filter(b => b.genres.includes(genre))
