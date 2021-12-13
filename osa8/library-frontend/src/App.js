@@ -4,8 +4,8 @@ import Books from './components/Books'
 import NewBook from './components/NewBook'
 import Recommendations from './components/Recommendations'
 import LoginForm from './components/LoginForm'
-import { useApolloClient, useQuery } from '@apollo/client'
-import { ALL_AUTHORS, ALL_BOOKS, USER_DATA } from './queries'
+import { useApolloClient, useQuery, useSubscription } from '@apollo/client'
+import { ALL_AUTHORS, ALL_BOOKS, BOOK_ADDED, USER_DATA } from './queries'
 
 const App = () => {
   const [page, setPage] = useState('authors')
@@ -20,6 +20,12 @@ const App = () => {
   })
   const user = useQuery(USER_DATA, {
     pollInterval: 2000
+  })
+
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      window.alert(`Added book ${subscriptionData.data.bookAdded.title} by ${subscriptionData.data.bookAdded.author.name}`)
+    }
   })
 
   useEffect(() => {

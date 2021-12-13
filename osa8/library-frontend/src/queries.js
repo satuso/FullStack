@@ -18,21 +18,36 @@ export const UPDATE_AUTHOR = gql`
     }
   }
 `
+export const BOOK_DETAILS = gql`
+  fragment BookDetails on Book {
+    title
+    published
+    author {
+      name
+      born
+      id
+      bookCount
+    }
+    genres
+  }
+`
 
 export const ALL_BOOKS = gql`
   query {
     allBooks {
-      title
-      published
-      author {
-        name
-        born
-        id
-        bookCount
-      }
-      genres
+      ...BookDetails
     }
   }
+  ${BOOK_DETAILS}
+`
+
+export const BOOK_ADDED = gql`
+  subscription {
+    bookAdded {
+      ...BookDetails
+    }
+  }
+  ${BOOK_DETAILS}
 `
 
 export const USER_DATA = gql`
