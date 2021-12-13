@@ -9,8 +9,8 @@ import { ALL_AUTHORS, ALL_BOOKS, USER_DATA } from './queries'
 
 const App = () => {
   const [page, setPage] = useState('authors')
-  const [token, setToken] = useState(null)
-  const [favoriteGenre, setFavoriteGenre] = useState(null)
+  const [token, setToken] = useState(localStorage.getItem('library-user-token'))
+  const [books, setBooks] = useState([])
 
   const resultAuthors = useQuery(ALL_AUTHORS, {
     pollInterval: 2000
@@ -18,23 +18,13 @@ const App = () => {
   const resultBooks = useQuery(ALL_BOOKS, {
     pollInterval: 2000
   })
-
-  const resultUser = useQuery(USER_DATA, {
+  const user = useQuery(USER_DATA, {
     pollInterval: 2000
   })
-
-  const [books, setBooks] = useState(resultBooks.data)
 
   useEffect(() => {
     if (resultBooks.data) setBooks(resultBooks.data.allBooks)
   }, [resultBooks])
-
-  useEffect(() => {
-    setFavoriteGenre(null)
-    if (resultUser.data && token) {
-      setFavoriteGenre(resultUser.data.me.favoriteGenre)
-    }
-  }, [resultUser, token])
 
   const client = useApolloClient()
 
@@ -68,7 +58,6 @@ const App = () => {
       />
       <Books
         show={page === 'books'}
-        setBooks={setBooks}
         books={books}
       />
       <NewBook
@@ -77,10 +66,8 @@ const App = () => {
       />
       <Recommendations
         show={page === 'recommendations'}
-        setBooks={setBooks}
         books={books}
-        favoriteGenre={favoriteGenre}
-        token={token}
+        user={user.data.me}
       />
       <LoginForm
         show={page === 'login'}

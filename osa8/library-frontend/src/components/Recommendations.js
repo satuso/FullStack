@@ -1,17 +1,16 @@
 import React from 'react'
 
-const Recommendations = (props) => {
-
-  const filterBooks = !props.favoriteGenre ? props.books : props.books.filter(b => b.genres.includes(props.favoriteGenre))
-
-  if (!props.show) {
+const Recommendations = ({ books, show, user }) => {
+  if (!show || !user) {
     return null
   }
+
+  const filterBooks = books.filter(book => book.genres.includes(user.favoriteGenre))
 
   return (
     <div>
       <h2>recommendations</h2>
-      {props.favoriteGenre && <p>books in your favorite genre: <b>{props.favoriteGenre}</b></p>}
+      {filterBooks && <p>books in your favorite genre: <b>{user.favoriteGenre}</b></p>}
       <table>
         <tbody>
           <tr>
