@@ -7,3 +7,4 @@
 * [part5](https://github.com/satuso/fullstack/tree/main/osa5)
 * [part6](https://github.com/satuso/fullstack/tree/main/osa6)
 * [part7](https://github.com/satuso/fullstack/tree/main/osa7)
+* [part8](https://github.com/satuso/fullstack/tree/main/osa8)
