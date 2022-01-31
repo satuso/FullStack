@@ -8,7 +8,7 @@ interface Result {
   average: number
 }
 
-const calculateExercises = (array: Array<number>, target: number) : Result => {
+export const calculateExercises = (array: Array<number>, target: number) : Result => {
   const average = array.reduce(function (avg, value, _, { length }) {
     return avg + value / length;
   }, 0);
@@ -47,7 +47,7 @@ interface Exercise {
   value2: number []
 }
 
-const parseArgsExercises = (args: Array<string>): Exercise => {
+export const parseArgsExercises = (args: Array<string>): Exercise => {
   if (args.length < 4) throw new Error('Not enough arguments');
 
   if (!isNaN(Number(args[2])) && !isNaN(Number(args[3]))){
