@@ -3,7 +3,7 @@ interface Bmi {
   value2: number;
 }
 
-const calculateBmi = (a: number, b: number) => {
+export const calculateBmi = (a: number, b: number) => {
   const c = a / 100;
   const bmi = b / (c * c);
   if (bmi < 18.4) {
