@@ -20,18 +20,9 @@ patientRouter.get('/:id', (_req, res) => {
 
 patientRouter.post('/', (_req, res) => {
   try {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const newPatient = toNewPatient(_req.body);
   const addedEntry = patientService.addPatient(newPatient);
-  /*
-  const { name, dateOfBirth, ssn, gender, occupation } = _req.body;
-  const newPatient = patientService.addPatient({
-    name,
-    dateOfBirth,
-    ssn,
-    gender,
-    occupation
-  });
-  */
   res.json(addedEntry);
   } catch (error: unknown) {
     let errorMessage = 'Something went wrong.';
