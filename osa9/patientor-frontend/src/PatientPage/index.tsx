@@ -1,13 +1,15 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect } from "react";
 import axios from "axios";
 import { apiBaseUrl } from "../constants";
 import { useParams } from "react-router-dom";
-import { useStateValue, getPatient } from "../state";
-import { Patient } from "../types";
+import { useStateValue, getPatient, setDiagnoses } from "../state";
+import { Patient, Diagnosis } from "../types";
 import { Icon } from "semantic-ui-react";
 
 const PatientPage = () => {
-  const [{ patients }, dispatch] = useStateValue();
+  const [{ patients, diagnoses }, dispatch] = useStateValue();
   const { id } = useParams<{ id: string }>();
   const patient = patients[id];
 
@@ -25,7 +27,22 @@ const PatientPage = () => {
     void fetchPatient();
   }, [dispatch]);
 
+  useEffect(() => {
+    const fetchDiagnoses = async () => {
+      try {
+        const { data: diagnosesFromApi } = await axios.get<Diagnosis[]>(
+          `${apiBaseUrl}/diagnoses`
+        );
+        dispatch(setDiagnoses(diagnosesFromApi));
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    void fetchDiagnoses();
+  }, [dispatch]);
+
   if (!patient) return null;
+  if (!diagnoses) return null;
 
   return (
     <div>
@@ -36,7 +53,7 @@ const PatientPage = () => {
       {patient.entries.map(entry => 
         <div key={entry.description}>
           <p>{entry.date} <i>{entry.description}</i></p>
-          <ul>{entry.diagnosisCodes?.map(code => <li key={code}>{code}</li>)}</ul>
+          <ul>{entry.diagnosisCodes?.map((code: any)=> <li key={code}>{code} {diagnoses[code]?.name}</li>)}</ul>
         </div>)}
     </div>
   );
