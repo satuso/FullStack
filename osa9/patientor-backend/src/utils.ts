@@ -1,4 +1,7 @@
-import { Gender, NewPatient } from './types';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+import { Gender, NewPatient, Entry } from './types';
 
 const isString = (text: unknown): text is string => {
   return typeof text === 'string' || text instanceof String;
@@ -29,9 +32,7 @@ const parseSSN = (ssn: unknown): string => {
   return ssn;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const isGender = (param: any): param is Gender => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   return Object.values(Gender).includes(param);
 };
 
@@ -49,16 +50,23 @@ const parseOccupation = (occupation : unknown): string => {
   return occupation;
 };
 
+const parseEntries = (entries: any): Entry[] => {
+  if (!entries) {
+    throw new Error(`Incorrect or missing entries: ${entries}`);
+  }
+  return entries;
+};
+
 type Fields = { name: unknown, dateOfBirth: unknown, ssn: unknown, gender: unknown, occupation: unknown, entries: unknown };
 
-const toNewPatient = ({ name, dateOfBirth, ssn, gender, occupation } : Fields): NewPatient => {
+const toNewPatient = ({ name, dateOfBirth, ssn, gender, occupation, entries } : Fields): NewPatient => {
   const newPatient: NewPatient = {
     name: parseName(name),
     dateOfBirth: parseDate(dateOfBirth),
     ssn: parseSSN(ssn),
     gender: parseGender(gender),
     occupation: parseOccupation(occupation),
-    entries: []
+    entries: parseEntries(entries)
   };
   return newPatient;
 };
