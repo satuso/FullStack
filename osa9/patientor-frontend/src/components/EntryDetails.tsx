@@ -27,7 +27,7 @@ const OccupationalHealthcareEntryDetails: React.FC<{ entry: OccupationalHealthca
   const [{ diagnoses }] = useStateValue();
   return (
     <div style={style}>
-      <h3>{entry.date} <Icon name="stethoscope"></Icon></h3>
+      <h3>{entry.date} <Icon name="stethoscope"></Icon> {entry.employerName}</h3>
       <p><i>{entry.description}</i></p>
       <ul>{entry.diagnosisCodes?.map((code: any)=> <li key={code}>{code} {diagnoses[code]?.name}</li>)}</ul>
     </div>
@@ -40,7 +40,7 @@ const HealthCheckEntryDetails: React.FC<{ entry: HealthCheckEntry }> = ({ entry 
     <div style={style}>
       <h3>{entry.date} <Icon name="doctor"></Icon></h3>
       <p><i>{entry.description}</i></p>
-      <p>{entry.healthCheckRating === 1 && <Icon color="yellow" name="heart"></Icon> || entry.healthCheckRating === 0 && <Icon color="green" name="heart"></Icon>}</p>
+      <p>{entry.healthCheckRating === 2 || 3 && <Icon color="red" name="heart"></Icon> || entry.healthCheckRating === 1 && <Icon color="yellow" name="heart"></Icon> || entry.healthCheckRating === 0 && <Icon color="green" name="heart"></Icon>}</p>
       <ul>{entry.diagnosisCodes?.map((code: any)=> <li key={code}>{code} {diagnoses[code]?.name}</li>)}</ul>
     </div>
   );

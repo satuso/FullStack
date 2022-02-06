@@ -12,9 +12,9 @@ const isDate = (date: string): boolean => {
   return Boolean(Date.parse(date));
 };
 
-const parseString = (name: unknown): string => {
+const parseName = (name: unknown): string => {
   if (!name || !isString(name)) {
-    throw new Error('Incorrect or missing field');
+    throw new Error('Incorrect or missing name');
   }
   return name;
 };
@@ -65,11 +65,39 @@ const parseRating = (healthCheckRating: any): number => {
   return healthCheckRating;
 };
 
+const parseDescription = (description: unknown): string => {
+  if (!description || !isString(description)) {
+    throw new Error('Incorrect or missing description');
+  }
+  return description;
+};
+
+const parseSpecialist = (specialist: unknown): string => {
+  if (!specialist || !isString(specialist)) {
+    throw new Error('Incorrect or missing specialist');
+  }
+  return specialist;
+};
+
+const parseEmployerName = (employerName: unknown): string => {
+  if (!employerName || !isString(employerName)) {
+    throw new Error('Incorrect or missing employer name');
+  }
+  return employerName;
+};
+
+const parseCriteria = (criteria: unknown): string => {
+  if (!criteria || !isString(criteria)) {
+    throw new Error('Incorrect or missing discharge criteria');
+  }
+  return criteria;
+};
+
 type Fields = { name: unknown, dateOfBirth: unknown, ssn: unknown, gender: unknown, occupation: unknown, entries: unknown };
 
 export const toNewPatient = ({ name, dateOfBirth, ssn, gender, occupation, entries } : Fields): NewPatient => {
   const newPatient: NewPatient = {
-    name: parseString(name),
+    name: parseName(name),
     dateOfBirth: parseDate(dateOfBirth),
     ssn: parseSSN(ssn),
     gender: parseGender(gender),
@@ -84,22 +112,22 @@ export const toNewEntry = (obj: any): NewEntry => {
     case "Hospital": {
       const newEntry: NewEntry = {
         type: "Hospital",
-        description: parseString(obj.description),
+        description: parseDescription(obj.description),
         date: parseDate(obj.date),
-        specialist: parseString(obj.specialist),
+        specialist: parseSpecialist(obj.specialist),
         diagnosisCodes: obj.diagnosisCodes,
         discharge: { 
           date : parseDate(obj.discharge.date),
-          criteria: parseString(obj.discharge.criteria)
+          criteria: parseCriteria(obj.discharge.criteria)
         }};
       return newEntry;
     }
     case "HealthCheck":{
       const newEntry: NewEntry = {
         type: "HealthCheck",
-        description: parseString(obj.description),
+        description: parseDescription(obj.description),
         date: parseDate(obj.date),
-        specialist: parseString(obj.specialist),
+        specialist: parseSpecialist(obj.specialist),
         diagnosisCodes: obj.diagnosisCodes,
         healthCheckRating: parseRating(obj.healthCheckRating)
       };
@@ -108,11 +136,11 @@ export const toNewEntry = (obj: any): NewEntry => {
     case "OccupationalHealthcare" :{
       const newEntry: NewEntry = {
         type: "OccupationalHealthcare",
-        description: parseString(obj.description),
+        description: parseDescription(obj.description),
         date: parseDate(obj.date),
-        specialist: parseString(obj.specialist),
+        specialist: parseSpecialist(obj.specialist),
         diagnosisCodes: obj.diagnosisCodes,
-        employerName: parseString(obj.employerName),
+        employerName: parseEmployerName(obj.employerName),
         sickLeave: {
           startDate: parseDate(obj.sickLeave.startDate),
           endDate: parseDate(obj.sickLeave.endDate),
