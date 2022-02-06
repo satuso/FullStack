@@ -1,4 +1,4 @@
-# fullstack course
+# full stack course exercises
 * [part0](https://github.com/satuso/fullstack/tree/main/osa0)
 * [part1](https://github.com/satuso/fullstack/tree/main/osa1)
 * [part2](https://github.com/satuso/fullstack/tree/main/osa2)
@@ -8,3 +8,4 @@
 * [part6](https://github.com/satuso/fullstack/tree/main/osa6)
 * [part7](https://github.com/satuso/fullstack/tree/main/osa7)
 * [part8](https://github.com/satuso/fullstack/tree/main/osa8)
+* [part9](https://github.com/satuso/fullstack/tree/main/osa9)
