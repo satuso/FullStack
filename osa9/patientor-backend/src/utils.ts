@@ -1,7 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import { Gender, NewPatient, Entry } from './types';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Gender, NewPatient, Entry, NewEntry } from './types';
 
 const isString = (text: unknown): text is string => {
   return typeof text === 'string' || text instanceof String;
@@ -11,9 +12,9 @@ const isDate = (date: string): boolean => {
   return Boolean(Date.parse(date));
 };
 
-const parseName = (name: unknown): string => {
+const parseString = (name: unknown): string => {
   if (!name || !isString(name)) {
-    throw new Error('Incorrect or missing name');
+    throw new Error('Incorrect or missing field');
   }
   return name;
 };
@@ -57,11 +58,18 @@ const parseEntries = (entries: any): Entry[] => {
   return entries;
 };
 
+const parseRating = (healthCheckRating: any): number => {
+  if (!healthCheckRating) {
+    throw new Error('Incorrect or missing health check rating');
+  }
+  return healthCheckRating;
+};
+
 type Fields = { name: unknown, dateOfBirth: unknown, ssn: unknown, gender: unknown, occupation: unknown, entries: unknown };
 
-const toNewPatient = ({ name, dateOfBirth, ssn, gender, occupation, entries } : Fields): NewPatient => {
+export const toNewPatient = ({ name, dateOfBirth, ssn, gender, occupation, entries } : Fields): NewPatient => {
   const newPatient: NewPatient = {
-    name: parseName(name),
+    name: parseString(name),
     dateOfBirth: parseDate(dateOfBirth),
     ssn: parseSSN(ssn),
     gender: parseGender(gender),
@@ -71,4 +79,48 @@ const toNewPatient = ({ name, dateOfBirth, ssn, gender, occupation, entries } : 
   return newPatient;
 };
 
-export default toNewPatient;
+export const toNewEntry = (obj: any): NewEntry => {
+  switch (obj.type) {
+    case "Hospital": {
+      const newEntry: NewEntry = {
+        type: "Hospital",
+        description: parseString(obj.description),
+        date: parseDate(obj.date),
+        specialist: parseString(obj.specialist),
+        diagnosisCodes: obj.diagnosisCodes,
+        discharge: { 
+          date : parseDate(obj.discharge.date),
+          criteria: parseString(obj.discharge.criteria)
+        }};
+      return newEntry;
+    }
+    case "HealthCheck":{
+      const newEntry: NewEntry = {
+        type: "HealthCheck",
+        description: parseString(obj.description),
+        date: parseDate(obj.date),
+        specialist: parseString(obj.specialist),
+        diagnosisCodes: obj.diagnosisCodes,
+        healthCheckRating: parseRating(obj.healthCheckRating)
+      };
+      return newEntry;
+    }
+    case "OccupationalHealthcare" :{
+      const newEntry: NewEntry = {
+        type: "OccupationalHealthcare",
+        description: parseString(obj.description),
+        date: parseDate(obj.date),
+        specialist: parseString(obj.specialist),
+        diagnosisCodes: obj.diagnosisCodes,
+        employerName: parseString(obj.employerName),
+        sickLeave: {
+          startDate: parseDate(obj.sickLeave.startDate),
+          endDate: parseDate(obj.sickLeave.endDate),
+        }
+      };
+      return newEntry;
+    }
+    default:
+      throw new Error('Incorrect or missing type');
+  }
+};
